@@ -5,12 +5,12 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Wed Apr 12 16:41:35 2017 theo champion
+** Last update Wed Apr 12 17:13:20 2017 theo champion
 */
 
 #include "header.h"
 
-int main(int argc, char **argv, char **env) {
+int	main(int argc, char **argv, char **env) {
   pid_t	p_child;
 
   if (argc < 2) {

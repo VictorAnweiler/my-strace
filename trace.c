@@ -5,13 +5,14 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:12:38 2017 theo champion
-** Last update Wed Apr 12 17:11:51 2017 theo champion
+** Last update Wed Apr 12 17:13:13 2017 theo champion
 */
 
 #include "header.h"
 
-int launch_child(char **argv, char **env) {
-  char **args;
+int	launch_child(char **argv, char **env)
+{
+  char	**args;
 
   args = (char **)argv[2];
   ptrace(PTRACE_TRACEME);
@@ -19,7 +20,8 @@ int launch_child(char **argv, char **env) {
   return (execve(argv[1], args, env));
 }
 
-int trace(pid_t pid) {
+int				trace(pid_t pid)
+{
   struct user_regs_struct	r;
   struct user_regs_struct	r_ret;
   unsigned short		instr_code;
