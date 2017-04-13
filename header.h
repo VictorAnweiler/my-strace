@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:14:25 2017 theo champion
-** Last update Thu Apr 13 18:08:07 2017 theo champion
+** Last update Thu Apr 13 18:42:33 2017 theo champion
 */
 
 #ifndef _HEADER_H_
@@ -15,6 +15,7 @@
 #include <bits/types.h>
 #include <sys/user.h>
 #include <sys/reg.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -29,6 +30,7 @@
 #define FUNC_MAX_LEN 50
 #define MAX_SYSCALL_NUM 331
 #define SYSCALL_MAXARGS 6
+#define PATHFLAG "PATH="
 
 enum argtype {
     ARG_INT,
@@ -47,5 +49,7 @@ extern t_entry g_entries[MAX_SYSCALL_NUM + 1];
 
 // TRACE.C
 void	print_syscall(pid_t child, uint32_t sysnum, uint32_t retval);
+// GETPATH.C
+char	*getpath(const char *bin, char * const *env);
 
 #endif /* !_HEADER_H_ */

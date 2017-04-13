@@ -5,20 +5,29 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Thu Apr 13 18:18:37 2017 theo champion
+** Last update Thu Apr 13 19:12:56 2017 theo champion
 */
 
 #include "header.h"
 
-int	launch_child(char **argv, char **env)
+static int	attach_to_running_process(void)
+{
+
+}
+
+static int	launch_child(const char **argv, char * const *env)
 {
   char	**args;
+  char *exe;
 
   args = (char **)argv[2];
-  printf("args = %s\n", argv[3]);
   ptrace(PTRACE_TRACEME);
+  exe = getpath(argv[1], env);
+  printf("%s\n", exe);
   kill(getpid(), SIGSTOP);
-  return (execve(argv[1], args, env));
+  execve(exe, args, env);
+  free(exe);
+  return (0);
 }
 
 int				trace(pid_t pid)
@@ -51,7 +60,7 @@ int				trace(pid_t pid)
   return (wait_status);
 }
 
-int		main(int argc, char **argv, char **env)
+int		main(const int argc, const char **argv, char * const *env)
 {
     pid_t	child;
 
@@ -61,9 +70,8 @@ int		main(int argc, char **argv, char **env)
     }
 
     child = fork();
-    if (child == 0) {
-      return launch_child(argv, env);
-    } else {
-        return trace(child);
-    }
+    if (child == 0)
+      return (launch_child(argv, env));
+    else
+      return trace(child);
 }

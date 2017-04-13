@@ -5,7 +5,7 @@
 ## Login   <theo.champion@epitech.eu>
 ## 
 ## Started on  Wed Apr 12 11:17:49 2017 theo champion
-## Last update Thu Apr 13 18:27:07 2017 theo champion
+## Last update Thu Apr 13 18:45:43 2017 theo champion
 ##
 
 CC	= cc
@@ -14,13 +14,14 @@ RM	= rm -f
 
 SRCDIR	= .
 
-CFLAGS	+= -Wall -Wextra -Werror -lm -g3
+CFLAGS	+= -Wall -Wextra -lm -g3
 CFLAGS	+= -I.
 
 NAME	= strace
 
 SRCS	= $(SRCDIR)/main.c		\
           $(SRCDIR)/trace.c		\
+	  $(SRCDIR)/getpath.c		\
           $(SRCDIR)/syscalls_entries.c
 
 OBJS	= $(SRCS:.c=.o)

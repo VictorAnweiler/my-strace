@@ -1,13 +1,16 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
+/*
+** getpath.c for strace in /home/rootkid/rendu/psu/PSU_2016_strace
+** 
+** Made by theo champion
+** Login   <theo.champion@epitech.eu>
+** 
+** Started on  Thu Apr 13 18:35:10 2017 theo champion
+** Last update Thu Apr 13 18:43:03 2017 theo champion
+*/
 
-#define PATHFLAG "PATH="
+#include "header.h"
 
-int	ispath(const char *str)
+static int	ispath(const char *str)
 {
   char	*test;
   int	i;
@@ -26,7 +29,7 @@ int	ispath(const char *str)
   return (1);
 }
 
-char	*getgoodpath(const char *bin, const char *env)
+static char	*getgoodpath(const char *bin, const char *env)
 {
   int		i;
   int		j;
@@ -38,14 +41,14 @@ char	*getgoodpath(const char *bin, const char *env)
   while ((unsigned int)++i <= strlen(env))
     {
       j = 0;
-      while (env[i+j] && env[i+j] != ':')
+      while (env[i+j] && env[i+j] != 0x3A)
 	j++;
       if (!(tmp = malloc(sizeof(char) * j + 2 + strlen(bin))))
 	return (NULL);
       tmp = strncpy(tmp, env + i, j);
-      *(tmp + j) = '/';
+      *(tmp + j) = 0x2F;
       memcpy(tmp + j + 1, bin, strlen(bin) + 1);
-      if (stat(tmp, &sb) == 0 && sb.st_mode & S_IXUSR) 
+      if (stat(tmp, &sb) == 0 && sb.st_mode & S_IXUSR)
 	return (tmp);
       free(tmp);
       i += j;
@@ -53,7 +56,7 @@ char	*getgoodpath(const char *bin, const char *env)
   return (NULL);
 }
 
-char	*getpath(const char *bin, const char **env)
+char	*getpath(const char *bin, char * const *env)
 {
   int	i;
 
