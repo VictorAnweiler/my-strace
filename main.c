@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Thu Apr 13 20:56:31 2017 theo champion
+** Last update Thu Apr 13 21:02:04 2017 theo champion
 */
 
 #include "header.h"
@@ -19,7 +19,7 @@ static int	attach_to_running_process(pid_t pid)
   return (0);
 }
 
-static int	launch_child(const char **argv, char * const *env)
+static int	launch_child(char **argv, char * const *env)
 {
   char		**args;
   char		*exe;
@@ -64,7 +64,7 @@ int				trace(pid_t pid)
     if (syscall == 1)
       {
 	if (r.rax == 231)
-	  printf("exit_group(0x0)      = ?\n");
+	  printf("exit_group(0x0)      = ?\n+++ exited with 0 +++\n");
 	else
 	  print_syscall(pid, r.rax, r_ret.rax);
       }
@@ -72,12 +72,12 @@ int				trace(pid_t pid)
   return (wait_status);
 }
 
-int		main(const int argc, const char **argv, char * const *env)
+int		main(int argc, char **argv, char * const *env)
 {
     pid_t	pid;
 
     if (argc < 2) {
-        fprintf(stderr, "Usage: %s [-s] [-p pid/name]\n", argv[0]);
+        fprintf(stderr, "Usage : %s [-s] [-p <pid>|<command>]\n", argv[0]);
         exit(1);
     }
     if (!strcmp(argv[1], "-p"))
