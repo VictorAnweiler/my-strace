@@ -7,6 +7,7 @@ import subprocess
 def do_syscall_numbers(unistd_h):
     syscalls = {}
     for line in open(unistd_h):
+        print "bite"
         m = re.search(r'^#define\s*__NR_(\w+)\s*(\d+)', line)
         if m:
             (name, number) = m.groups()
@@ -64,7 +65,7 @@ def find_args(linux):
     return syscalls
 
 def parse_type(t):
-    if re.search(r'^(const\s*)?char\s*(__user\s*)?\*\s*$', t): # à verfier
+    if re.search(r'^(const\s*)?char\s*(__user\s*)?\*\s*$', t): # a verfier
         return "ARG_STR"
     if t.endswith('*'):
         return "ARG_PTR"
@@ -98,7 +99,7 @@ def main(args):
         return 1
     linux_dir = args[0]
     if os.uname()[4] == 'x86_64':
-        unistd_h = "arch/x86/include/asm/unistd_64.h" #essaye plutot /usr/include/asm...
+        unistd_h = "/usr/include/asm-x86/unistd_64.h" #essaye plutot /usr/include/asm...
     else:
         unistd_h = "arch/x86/include/asm/unistd_32.h"
 
