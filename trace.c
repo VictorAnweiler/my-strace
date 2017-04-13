@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Thu Apr 13 17:20:15 2017 theo champion
-** Last update Thu Apr 13 20:37:54 2017 theo champion
+** Last update Thu Apr 13 23:08:26 2017 theo champion
 */
 
 #include "header.h"
@@ -52,7 +52,7 @@ static long	get_syscall_arg(pid_t child, int arg_nb)
     case 5:
       return (get_register_value(child, R9));
     default:
-      return (-1L);
+      return (-1);
     }
 }
 
@@ -73,7 +73,10 @@ static void			print_syscall_args(pid_t child, int num)
     while (i < nargs)
       {
         arg = get_syscall_arg(child, i);
-        arg ? fprintf(stderr, "0x%x", arg) : fprintf(stderr, "0x0");
+	if (num == EXIT_SYSCALL)
+	  fprintf(stderr, "0x0");
+	else
+	  arg ? fprintf(stderr, "0x%x", arg) : fprintf(stderr, "0x0");
         if (i != nargs - 1)
           fprintf(stderr, ", ");
         i++;
@@ -85,5 +88,8 @@ void	print_syscall(pid_t child, uint32_t sysnum, uint32_t retval)
     fprintf(stderr, "%s(", get_syscall_name(sysnum));
     print_syscall_args(child, sysnum);
     fprintf(stderr, ") = ");
-    retval ? fprintf(stderr, "0x%x\n", retval) : fprintf(stderr, "0x0\n");
+    if (sysnum == EXIT_SYSCALL)
+      fprintf(stderr, "?\n+++ exited with 0 +++\n");
+    else
+      retval ? fprintf(stderr, "0x%x\n", retval) : fprintf(stderr, "0x0\n");
 }

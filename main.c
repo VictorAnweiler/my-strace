@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Thu Apr 13 21:02:04 2017 theo champion
+** Last update Thu Apr 13 23:05:28 2017 theo champion
 */
 
 #include "header.h"
@@ -19,12 +19,16 @@ static int	attach_to_running_process(pid_t pid)
   return (0);
 }
 
-static int	launch_child(char **argv, char * const *env)
+static int	launch_child(int argc, char **argv, char * const *env)
 {
-  char		**args;
   char		*exe;
+  char		*args[argc+1];
+  int		i;
 
-  args = (char **)argv[2];
+  i = -1;
+  while (++i < argc)
+    args[i] = argv[i + 1];
+  args[argc] = NULL;
   ptrace(PTRACE_TRACEME);
   exe = getpath(argv[1], env);
   kill(getpid(), SIGSTOP);
@@ -62,12 +66,7 @@ int				trace(pid_t pid)
         perror("ptrace2 getregs:");
     }
     if (syscall == 1)
-      {
-	if (r.rax == 231)
-	  printf("exit_group(0x0)      = ?\n+++ exited with 0 +++\n");
-	else
-	  print_syscall(pid, r.rax, r_ret.rax);
-      }
+      print_syscall(pid, r.rax, r_ret.rax);
     }
   return (wait_status);
 }
@@ -86,7 +85,7 @@ int		main(int argc, char **argv, char * const *env)
       {
         pid = fork();
         if (pid == 0)
-          return (launch_child(argv, env));
+          return (launch_child(argc, argv, env));
       }
     return (trace(pid));
 }

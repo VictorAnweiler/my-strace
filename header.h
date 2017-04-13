@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:14:25 2017 theo champion
-** Last update Thu Apr 13 19:28:03 2017 theo champion
+** Last update Thu Apr 13 22:55:18 2017 theo champion
 */
 
 #ifndef _HEADER_H_
@@ -27,6 +27,7 @@
 #include <stdint.h>
 
 #define SYSCALL_CODE 0x050F
+#define EXIT_SYSCALL 231
 #define FUNC_MAX_LEN 50
 #define MAX_SYSCALL_NUM 331
 #define SYSCALL_MAXARGS 6
