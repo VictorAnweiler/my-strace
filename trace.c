@@ -4,48 +4,86 @@
 ** Made by theo champion
 ** Login   <theo.champion@epitech.eu>
 ** 
-** Started on  Wed Apr 12 11:12:38 2017 theo champion
-** Last update Wed Apr 12 17:13:13 2017 theo champion
+** Started on  Thu Apr 13 17:20:15 2017 theo champion
+** Last update Thu Apr 13 18:14:49 2017 theo champion
 */
 
 #include "header.h"
 
-int	launch_child(char **argv, char **env)
+static uint32_t	get_register_value(pid_t child, int pos)
 {
-  char	**args;
+  int	offset;
+  uint32_t	value;
 
-  args = (char **)argv[2];
-  ptrace(PTRACE_TRACEME);
-  kill(getpid(), SIGSTOP);
-  return (execve(argv[1], args, env));
+  offset = sizeof(unsigned long long) * pos;
+  value = ptrace(PTRACE_PEEKUSER, child, offset);
+  return (value);
 }
 
-int				trace(pid_t pid)
+const char			*get_syscall_name(int scn)
 {
-  struct user_regs_struct	r;
-  struct user_regs_struct	r_ret;
-  unsigned short		instr_code;
-  int				wait_status;
-  bool				syscall;
+    t_entry			*ent;
+    static char			buf[FUNC_MAX_LEN];
 
-  waitpid(pid, &wait_status, 0);
-  while (WIFSTOPPED(wait_status)
-	 && (WSTOPSIG(wait_status) == SIGTRAP
-	     || WSTOPSIG(wait_status) == SIGSTOP))
+    if (scn <= MAX_SYSCALL_NUM)
+      {
+        ent = &g_entries[scn];
+        if (ent->name)
+          return (ent->name);
+      }
+    snprintf(buf, sizeof buf, "sys_%d", scn);
+    return (buf);
+}
+
+static long	get_syscall_arg(pid_t child, int arg_nb)
+{
+  switch (arg_nb)
     {
-    syscall = false;
-    if (ptrace(PTRACE_GETREGS, pid, 0, &r))
-      perror("ptrace getregs:");
-    instr_code = ptrace(PTRACE_PEEKTEXT, pid, r.rip, 0);
-    if (instr_code == SYSCALL_CODE)
-      syscall = true;
-    if (ptrace(PTRACE_SINGLESTEP, pid, 0, 0) == -1)
-      perror("ptrace singlestep");
-    waitpid(pid, &wait_status, 0);
-    if (ptrace(PTRACE_GETREGS, pid, 0, &r_ret))
-      perror("ptrace getregs:");
-    if (syscall)
-      printf("reg rax %llu res ret %llu\n", r.rax, r_ret.rax);
-  }
-  return (wait_status);
+    case 0:
+      return (get_register_value(child, RDI));
+    case 1:
+      return (get_register_value(child, RSI));
+    case 2:
+      return (get_register_value(child, RDX));
+    case 3:
+      return (get_register_value(child, R10));
+    case 4:
+      return (get_register_value(child, R8));
+    case 5:
+      return (get_register_value(child, R9));
+    default:
+      return (-1L);
+    }
+}
+
+static void	print_syscall_args(pid_t child, int num)
+{
+    t_entry			*ent = NULL;
+    int				nargs;
+    int				i;
+    uint32_t			arg;
+
+    nargs = SYSCALL_MAXARGS;
+    if (num <= MAX_SYSCALL_NUM && g_entries[num].name)
+      {
+        ent = &g_entries[num];
+        nargs = ent->nargs;
+      }
+    i = 0;
+    while (i < nargs)
+      {
+        arg = get_syscall_arg(child, i);
+        arg ? fprintf(stderr, "0x%x", arg) : fprintf(stderr, "0x0");
+        if (i != nargs - 1)
+          fprintf(stderr, ", ");
+        i++;
+    }
+}
+
+void	print_syscall(pid_t child, uint32_t sysnum, uint32_t retval)
+{
+    fprintf(stderr, "%s(", get_syscall_name(sysnum));
+    print_syscall_args(child, sysnum);
+    fprintf(stderr, ") = ");
+    retval ? fprintf(stderr, "0x%x\n", retval) : fprintf(stderr, "0x0\n");
 }
