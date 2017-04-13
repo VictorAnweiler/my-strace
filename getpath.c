@@ -5,7 +5,7 @@
 ** Login   <antoine.cauquil@epitech.eu>
 ** 
 ** Started on  Thu Apr 13 19:06:31 2017 
-** Last update Thu Apr 13 19:14:52 2017 theo champion
+** Last update Thu Apr 13 19:27:26 2017 theo champion
 */
 
 #include "header.h"
@@ -56,7 +56,7 @@ static char	*getgoodpath(const char *bin, const char *env)
   return (NULL);
 }
 
-const char	*getpath(const char *bin, char * const *env)
+char	*getpath(char *bin, char * const *env)
 {
   int		i;
   struct stat	sb;

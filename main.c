@@ -5,25 +5,28 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Thu Apr 13 19:15:46 2017 theo champion
+** Last update Thu Apr 13 19:53:15 2017 theo champion
 */
 
 #include "header.h"
 
-static int	attach_to_running_process(void)
+static int	attach_to_running_process(pid_t pid)
 {
-
+  if (ptrace(PTRACE_ATTACH, pid, NULL, NULL) == -1) {
+    perror("Ptrace attach: ");
+    return (1);
+  }
+  return (0);
 }
 
 static int	launch_child(const char **argv, char * const *env)
 {
-  char	**args;
-  char *exe;
+  char		**args;
+  char		*exe;
 
   args = (char **)argv[2];
   ptrace(PTRACE_TRACEME);
   exe = getpath(argv[1], env);
-  printf("%s\n", exe);
   kill(getpid(), SIGSTOP);
   execve(exe, args, env);
   free(exe);
@@ -40,8 +43,8 @@ int				trace(pid_t pid)
 
   waitpid(pid, &wait_status, 0);
   while (WIFSTOPPED(wait_status)
-	 && (WSTOPSIG(wait_status) == SIGTRAP
-	     || WSTOPSIG(wait_status) == SIGSTOP))
+         && (WSTOPSIG(wait_status) == SIGTRAP
+             || WSTOPSIG(wait_status) == SIGSTOP))
     {
     syscall = 0;
     if (ptrace(PTRACE_GETREGS, pid, 0, &r))
@@ -62,16 +65,19 @@ int				trace(pid_t pid)
 
 int		main(const int argc, const char **argv, char * const *env)
 {
-    pid_t	child;
+    pid_t	pid;
 
     if (argc < 2) {
         fprintf(stderr, "Usage: %s [-s] [-p pid/name]\n", argv[0]);
         exit(1);
     }
-
-    child = fork();
-    if (child == 0)
-      return (launch_child(argv, env));
+    if (!strcmp(argv[1], "-p"))
+      attach_to_running_process((pid = (pid_t)atoi(argv[2])));
     else
-      return trace(child);
+      {
+        pid = fork();
+        if (pid == 0)
+          return (launch_child(argv, env));
+      }
+    return (trace(pid));
 }

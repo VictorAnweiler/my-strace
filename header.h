@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:14:25 2017 theo champion
-** Last update Thu Apr 13 19:15:56 2017 theo champion
+** Last update Thu Apr 13 19:28:03 2017 theo champion
 */
 
 #ifndef _HEADER_H_
@@ -50,6 +50,6 @@ extern t_entry g_entries[MAX_SYSCALL_NUM + 1];
 // TRACE.C
 void	print_syscall(pid_t child, uint32_t sysnum, uint32_t retval);
 // GETPATH.C
-char	*getpath(const char *bin, char * const *env);
+char	*getpath(char *bin, char * const *env);
 
 #endif /* !_HEADER_H_ */

@@ -5,7 +5,7 @@
 ## Login   <theo.champion@epitech.eu>
 ## 
 ## Started on  Wed Apr 12 11:17:49 2017 theo champion
-## Last update Thu Apr 13 18:45:43 2017 theo champion
+## Last update Thu Apr 13 19:26:58 2017 theo champion
 ##
 
 CC	= cc
@@ -14,7 +14,7 @@ RM	= rm -f
 
 SRCDIR	= .
 
-CFLAGS	+= -Wall -Wextra -lm -g3
+CFLAGS	+= -Wall -Wextra
 CFLAGS	+= -I.
 
 NAME	= strace
