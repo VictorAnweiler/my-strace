@@ -1,16 +1,19 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
+/*
+** getpath.c for PSU_2016_strace in /home/bufferking/rendu/psu_2016/PSU_2016_strace
+** 
+** Made by bufferking
+** Login   <antoine.cauquil@epitech.eu>
+** 
+** Started on  Thu Apr 13 19:06:31 2017 
+** Last update Thu Apr 13 19:09:27 2017 
+*/
 
-#define PATHFLAG "PATH="
+#include "header.h"
 
-int	ispath(const char *str)
+int		ispath(const char *str)
 {
-  char	*test;
-  int	i;
+  char		*test;
+  int		i;
 
   if (strlen(str) < strlen(PATHFLAG))
     return (0);
@@ -26,7 +29,7 @@ int	ispath(const char *str)
   return (1);
 }
 
-char	*getgoodpath(const char *bin, const char *env)
+char		*getgoodpath(const char *bin, const char *env)
 {
   int		i;
   int		j;
@@ -53,11 +56,14 @@ char	*getgoodpath(const char *bin, const char *env)
   return (NULL);
 }
 
-char	*getpath(const char *bin, const char **env)
+char		*getpath(const char *bin, const char **env)
 {
-  int	i;
-
+  int		i;
+  struct stat	sb;
+  
   i = i ^ i;
+  if (stat(bin, &sb) == 0 && sb.st_mode & S_IXUSR)
+    return (bin);
   while (env[i])
     {
       if (ispath(env[i]))
