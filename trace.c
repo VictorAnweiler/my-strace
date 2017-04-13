@@ -5,14 +5,14 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Thu Apr 13 17:20:15 2017 theo champion
-** Last update Thu Apr 13 18:14:49 2017 theo champion
+** Last update Thu Apr 13 20:37:54 2017 theo champion
 */
 
 #include "header.h"
 
 static uint32_t	get_register_value(pid_t child, int pos)
 {
-  int	offset;
+  int		offset;
   uint32_t	value;
 
   offset = sizeof(unsigned long long) * pos;
@@ -56,7 +56,7 @@ static long	get_syscall_arg(pid_t child, int arg_nb)
     }
 }
 
-static void	print_syscall_args(pid_t child, int num)
+static void			print_syscall_args(pid_t child, int num)
 {
     t_entry			*ent = NULL;
     int				nargs;

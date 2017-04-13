@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Thu Apr 13 19:53:15 2017 theo champion
+** Last update Thu Apr 13 20:56:31 2017 theo champion
 */
 
 #include "header.h"
@@ -48,18 +48,27 @@ int				trace(pid_t pid)
     {
     syscall = 0;
     if (ptrace(PTRACE_GETREGS, pid, 0, &r))
-      perror("ptrace getregs:");
+      perror("ptrace1 getregs:");
     instr_code = ptrace(PTRACE_PEEKTEXT, pid, r.rip, 0);
     if (instr_code == SYSCALL_CODE)
       syscall = 1;
     if (ptrace(PTRACE_SINGLESTEP, pid, 0, 0) == -1)
       perror("ptrace singlestep");
     waitpid(pid, &wait_status, 0);
-    if (ptrace(PTRACE_GETREGS, pid, 0, &r_ret))
-      perror("ptrace getregs:");
+    if (WIFSTOPPED(wait_status)
+         && (WSTOPSIG(wait_status) == SIGTRAP
+             || WSTOPSIG(wait_status) == SIGSTOP)) {
+      if (ptrace(PTRACE_GETREGS, pid, 0, &r_ret))
+        perror("ptrace2 getregs:");
+    }
     if (syscall == 1)
-      print_syscall(pid, r.rax, r_ret.rax);
-  }
+      {
+	if (r.rax == 231)
+	  printf("exit_group(0x0)      = ?\n");
+	else
+	  print_syscall(pid, r.rax, r_ret.rax);
+      }
+    }
   return (wait_status);
 }
 
