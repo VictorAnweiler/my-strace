@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Thu Apr 13 17:20:15 2017 theo champion
-** Last update Fri Apr 14 11:02:02 2017 theo champion
+** Last update Fri Apr 14 12:53:55 2017 theo champion
 */
 
 #include "header.h"
@@ -31,7 +31,7 @@ const char			*get_syscall_name(int scn)
         if (ent->name)
           return (ent->name);
       }
-    snprintf(buf, sizeof buf, "sys_%d", scn);
+    snprintf(buf, sizeof(buf), "sys_%d", scn);
     return (buf);
 }
 
@@ -59,9 +59,9 @@ static void			print_syscall_args(pid_t child, int num)
     while (i < nargs)
       {
         arg = get_syscall_arg(child, i);
-        if (num == EXIT_SYSCALL)
-          fprintf(stderr, "0x0");
-        else
+	//        if (num == EXIT_SYSCALL)
+	//fprintf(stderr, "0x0");
+        //else
           arg ? fprintf(stderr, "0x%x", arg) : fprintf(stderr, "0x0");
         if (i != nargs - 1)
           fprintf(stderr, ", ");
