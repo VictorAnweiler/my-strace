@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:14:25 2017 theo champion
-** Last update Thu Apr 13 22:55:18 2017 theo champion
+** Last update Fri Apr 14 14:19:49 2017 theo champion
 */
 
 #ifndef _HEADER_H_
@@ -33,7 +33,7 @@
 #define SYSCALL_MAXARGS 6
 #define PATHFLAG "PATH="
 
-enum argtype {
+enum e_arg_type {
     ARG_INT,
     ARG_PTR,
     ARG_STR
@@ -41,9 +41,9 @@ enum argtype {
 
 typedef struct		s_entry
 {
-  const char *name;
-  int nargs;
-  enum argtype args[SYSCALL_MAXARGS];
+  const char		*name;
+  int			nb_args;
+  enum e_arg_type	args_arr[SYSCALL_MAXARGS];
 }			t_entry;
 
 extern t_entry g_entries[MAX_SYSCALL_NUM + 1];

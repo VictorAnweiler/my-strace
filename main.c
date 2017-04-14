@@ -5,10 +5,17 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Fri Apr 14 11:03:31 2017 theo champion
+** Last update Fri Apr 14 14:03:53 2017 theo champion
 */
 
 #include "header.h"
+
+inline static int	signal_status_handler(int wait_status)
+{
+  return ((WSTOPSIG(wait_status) == SIGTRAP
+           || WSTOPSIG(wait_status) == SIGSTOP)
+          && WIFSTOPPED(wait_status));
+}
 
 static int	attach_to_running_process(pid_t pid)
 {
@@ -47,27 +54,24 @@ int				trace(pid_t pid)
   int				syscall;
 
   waitpid(pid, &wait_status, 0);
-  while (WIFSTOPPED(wait_status)
-         && (WSTOPSIG(wait_status) == SIGTRAP
-             || WSTOPSIG(wait_status) == SIGSTOP))
+  while (signal_status_handler(wait_status))
     {
     syscall = 0;
     if (ptrace(PTRACE_GETREGS, pid, 0, &r))
-      perror("ptrace1 getregs:");
+      perror("ptrace");
     instr_code = ptrace(PTRACE_PEEKTEXT, pid, r.rip, 0);
     if (instr_code == SYSCALL_CODE)
       syscall = 1;
     if (ptrace(PTRACE_SINGLESTEP, pid, 0, 0) == -1)
-      perror("ptrace singlestep");
+      perror("ptrace");
     waitpid(pid, &wait_status, 0);
-    if (WIFSTOPPED(wait_status)
-         && (WSTOPSIG(wait_status) == SIGTRAP
-             || WSTOPSIG(wait_status) == SIGSTOP)) {
-      if (ptrace(PTRACE_GETREGS, pid, 0, &r_ret))
-        perror("ptrace2 getregs:");
-    }
-    if (syscall == 1)
-      print_syscall(pid, r.rax, r_ret.rax);
+    if (signal_status_handler(wait_status))
+      {
+        if (ptrace(PTRACE_GETREGS, pid, 0, &r_ret))
+          perror("ptrace");
+        if (syscall)
+          print_syscall(pid, r.rax, r_ret.rax);
+      }
     }
   return (wait_status);
 }
@@ -75,11 +79,13 @@ int				trace(pid_t pid)
 int		main(int argc, char **argv, char * const *env)
 {
     pid_t	pid;
+    int		exit_status;
 
-    if (argc < 2) {
+    if (argc < 2)
+      {
         fprintf(stderr, "Usage : %s [-s] [-p <pid>|<command>]\n", argv[0]);
         exit(1);
-    }
+      }
     if (!strcmp(argv[1], "-p"))
       attach_to_running_process((pid = (pid_t)atoi(argv[2])));
     else
@@ -88,5 +94,9 @@ int		main(int argc, char **argv, char * const *env)
         if (pid == 0)
           return (launch_child(argc, argv, env));
       }
-    return (trace(pid));
+    exit_status = trace(pid);
+    if (WIFEXITED(exit_status))
+      printf("exit_group(0x%x) = ?\n+++ exited with %d +++\n",
+             WEXITSTATUS(exit_status), WEXITSTATUS(exit_status));
+    return (0);
 }

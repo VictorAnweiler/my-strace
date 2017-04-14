@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Thu Apr 13 17:20:15 2017 theo champion
-** Last update Fri Apr 14 13:06:09 2017 theo champion
+** Last update Fri Apr 14 14:16:52 2017 theo champion
 */
 
 #include "header.h"
@@ -37,36 +37,39 @@ const char			*get_syscall_name(int scn)
 
 static long	get_syscall_arg(pid_t child, int arg_nb)
 {
-  int		regs[] = {RDI, RSI, RDX, R10, R8, R9};
+  int		regs[SYSCALL_MAXARGS];
 
+  regs[0] = RDI;
+  regs[1] = RSI;
+  regs[2] = RDX;
+  regs[3] = R10;
+  regs[4] = R8;
+  regs[5] = R9;
   return (get_register_value(child, regs[arg_nb]));
 }
 
 static void			print_syscall_args(pid_t child, int num)
 {
-    t_entry			*ent = NULL;
-    int				nargs;
+    t_entry			*ent;
+    int				nb_args;
     int				i;
     uint32_t			arg;
 
-    nargs = SYSCALL_MAXARGS;
+    ent = NULL;
+    nb_args = SYSCALL_MAXARGS;
     if (num <= MAX_SYSCALL_NUM && g_entries[num].name)
       {
         ent = &g_entries[num];
-        nargs = ent->nargs;
+        nb_args = ent->nb_args;
       }
     i = 0;
-    while (i < nargs)
+    while (i < nb_args)
       {
         arg = get_syscall_arg(child, i);
-	if (num == EXIT_SYSCALL)
-	  fprintf(stderr, "0x0");
-        else
-          arg ? fprintf(stderr, "0x%x", arg) : fprintf(stderr, "0x0");
-        if (i != nargs - 1)
+        arg ? fprintf(stderr, "0x%x", arg) : fprintf(stderr, "0x0");
+        if (i++ != nb_args - 1)
           fprintf(stderr, ", ");
-        i++;
-    }
+      }
 }
 
 void	print_syscall(pid_t child, uint32_t sysnum, uint32_t retval)
@@ -74,8 +77,5 @@ void	print_syscall(pid_t child, uint32_t sysnum, uint32_t retval)
     fprintf(stderr, "%s(", get_syscall_name(sysnum));
     print_syscall_args(child, sysnum);
     fprintf(stderr, ") = ");
-    if (sysnum == EXIT_SYSCALL)
-      fprintf(stderr, "?\n+++ exited with 0 +++\n");
-    else
-      retval ? fprintf(stderr, "0x%x\n", retval) : fprintf(stderr, "0x0\n");
+    retval ? fprintf(stderr, "0x%x\n", retval) : fprintf(stderr, "0x0\n");
 }
