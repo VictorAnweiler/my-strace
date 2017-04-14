@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Thu Apr 13 17:20:15 2017 theo champion
-** Last update Thu Apr 13 23:08:26 2017 theo champion
+** Last update Fri Apr 14 11:02:02 2017 theo champion
 */
 
 #include "header.h"
@@ -37,23 +37,9 @@ const char			*get_syscall_name(int scn)
 
 static long	get_syscall_arg(pid_t child, int arg_nb)
 {
-  switch (arg_nb)
-    {
-    case 0:
-      return (get_register_value(child, RDI));
-    case 1:
-      return (get_register_value(child, RSI));
-    case 2:
-      return (get_register_value(child, RDX));
-    case 3:
-      return (get_register_value(child, R10));
-    case 4:
-      return (get_register_value(child, R8));
-    case 5:
-      return (get_register_value(child, R9));
-    default:
-      return (-1);
-    }
+  int		regs[] = {RDI, RSI, RDX, R10, R8, R9};
+
+  return (get_register_value(child, regs[arg_nb]));
 }
 
 static void			print_syscall_args(pid_t child, int num)
@@ -73,10 +59,10 @@ static void			print_syscall_args(pid_t child, int num)
     while (i < nargs)
       {
         arg = get_syscall_arg(child, i);
-	if (num == EXIT_SYSCALL)
-	  fprintf(stderr, "0x0");
-	else
-	  arg ? fprintf(stderr, "0x%x", arg) : fprintf(stderr, "0x0");
+        if (num == EXIT_SYSCALL)
+          fprintf(stderr, "0x0");
+        else
+          arg ? fprintf(stderr, "0x%x", arg) : fprintf(stderr, "0x0");
         if (i != nargs - 1)
           fprintf(stderr, ", ");
         i++;

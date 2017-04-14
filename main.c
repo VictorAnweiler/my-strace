@@ -5,17 +5,18 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Thu Apr 13 23:05:28 2017 theo champion
+** Last update Fri Apr 14 11:03:31 2017 theo champion
 */
 
 #include "header.h"
 
 static int	attach_to_running_process(pid_t pid)
 {
-  if (ptrace(PTRACE_ATTACH, pid, NULL, NULL) == -1) {
-    perror("Ptrace attach: ");
-    return (1);
-  }
+  if (ptrace(PTRACE_ATTACH, pid, NULL, NULL) == -1)
+    {
+      perror("Ptrace attach: ");
+      return (1);
+    }
   return (0);
 }
 
