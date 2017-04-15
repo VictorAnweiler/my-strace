@@ -5,8 +5,11 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Fri Apr 14 14:12:54 2017 theo champion
-** Last update Sat Apr 15 20:37:41 2017 theo champion
+** Last update Sat Apr 15 20:42:48 2017 theo champion
 */
+
+#ifndef _SYSCALLS_ENTRIES_H_
+#define _SYSCALLS_ENTRIES_H_
 
 static t_entry		g_entries[] = {
   [0] = {
@@ -1006,3 +1009,5 @@ static t_entry		g_entries[] = {
     .nb_args = 1,
     .name  = "pkey_free"},
 };
+
+#endif /* !_SYSCALLS_ENTRIES_H_ */
