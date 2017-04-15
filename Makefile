@@ -5,7 +5,7 @@
 ## Login   <theo.champion@epitech.eu>
 ## 
 ## Started on  Wed Apr 12 11:17:49 2017 theo champion
-## Last update Thu Apr 13 19:26:58 2017 theo champion
+## Last update Sat Apr 15 20:25:02 2017 theo champion
 ##
 
 CC	= cc
@@ -21,8 +21,7 @@ NAME	= strace
 
 SRCS	= $(SRCDIR)/main.c		\
           $(SRCDIR)/trace.c		\
-	  $(SRCDIR)/getpath.c		\
-          $(SRCDIR)/syscalls_entries.c
+	  $(SRCDIR)/getpath.c
 
 OBJS	= $(SRCS:.c=.o)
 

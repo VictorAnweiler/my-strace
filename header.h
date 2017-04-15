@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:14:25 2017 theo champion
-** Last update Fri Apr 14 14:19:49 2017 theo champion
+** Last update Sat Apr 15 20:25:30 2017 theo champion
 */
 
 #ifndef _HEADER_H_
@@ -45,8 +45,6 @@ typedef struct		s_entry
   int			nb_args;
   enum e_arg_type	args_arr[SYSCALL_MAXARGS];
 }			t_entry;
-
-extern t_entry g_entries[MAX_SYSCALL_NUM + 1];
 
 // TRACE.C
 void	print_syscall(pid_t child, uint32_t sysnum, uint32_t retval);
