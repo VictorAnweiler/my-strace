@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Fri Apr 14 14:03:53 2017 theo champion
+** Last update Sat Apr 15 20:40:13 2017 theo champion
 */
 
 #include "header.h"
@@ -96,7 +96,7 @@ int		main(int argc, char **argv, char * const *env)
       }
     exit_status = trace(pid);
     if (WIFEXITED(exit_status))
-      printf("exit_group(0x%x) = ?\n+++ exited with %d +++\n",
+      fprintf(stderr, "exit_group(0x%x) = ?\n+++ exited with %d +++\n",
              WEXITSTATUS(exit_status), WEXITSTATUS(exit_status));
     return (0);
 }
