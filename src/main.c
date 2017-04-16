@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Sun Apr 16 18:51:45 2017 theo champion
+** Last update Sun Apr 16 19:27:11 2017 theo champion
 */
 
 #include "header.h"
@@ -43,7 +43,7 @@ static int	launch_child(int argc, char **argv, int mode)
   return (EXIT_SUCCESS);
 }
 
-static int				trace(pid_t pid, int mode)
+static int			trace(pid_t pid, int mode)
 {
   struct user_regs_struct	r;
   unsigned short		instr_code;
@@ -76,17 +76,19 @@ int		main(int argc, char **av)
 
   mode = 0;
   if (argc < 2)
-    return (fprintf(stderr, "Usage : %s [-s] [-p <pid>|<command>]\n", av[0])
-            || 1);
+    return (fprintf(stderr, "Usage : %s [-s] [-p <pid>|<command>]\n",
+                    av[0]) || 1);
   if (!strcmp(av[1], "-s"))
     mode = 1;
-  if (!strcmp(av[1 + mode], "-p") && av[2 + mode])
+  if (av[1 + mode] && !strcmp(av[1 + mode], "-p") && av[2 + mode])
     {
-      if (attach_to_running_process((pid = (pid_t)atoi(av[2]))))
+      if (attach_to_running_process((pid = (pid_t)atoi(av[2 + mode]))))
         return (EXIT_FAILURE);
     }
   else
     {
+      if (!av[1 + mode])
+	return (fprintf(stderr, "Usage : ./strace [-s] [-p <pid>|<command>]\n") || 1);
       pid = fork();
       if (pid == 0)
         return (launch_child(argc, av, mode));

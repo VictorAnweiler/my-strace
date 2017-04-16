@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Fri Apr 14 14:12:54 2017 theo champion
-** Last update Sun Apr 16 18:10:49 2017 theo champion
+** Last update Sun Apr 16 19:04:03 2017 theo champion
 */
 
 #ifndef _SYSCALLS_ENTRIES_H_
@@ -85,7 +85,7 @@ static t_entry		g_entries[] = {
     .nb_args = 2,
   },
   [12] = {
-    .retval = PTR,
+    .retval = INT,
     .name  = "brk",
     .args_value  = {PTR, -1, -1, -1, -1, -1},
     .nb_args = 1,

@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:14:25 2017 theo champion
-** Last update Sun Apr 16 17:34:03 2017 theo champion
+** Last update Sun Apr 16 19:28:52 2017 theo champion
 */
 
 #ifndef _HEADER_H_
@@ -15,16 +15,12 @@
 #include <ctype.h>
 #include <sys/user.h>
 #include <sys/reg.h>
-#include <sys/stat.h>
 #include <sys/wait.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
-#include <assert.h>
 #include <string.h>
-#include <stdint.h>
 
 #define SYSCALL_CODE 0x050F
 #define EXIT_SYSCALL 231

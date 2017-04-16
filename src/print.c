@@ -5,12 +5,13 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Sun Apr 16 18:14:01 2017 theo champion
-** Last update Sun Apr 16 19:12:39 2017 theo champion
+** Last update Sun Apr 16 19:31:11 2017 theo champion
 */
 
 #include "header.h"
 
-static char		*read_string(pid_t child, unsigned long addr) {
+static char		*read_string(pid_t child, unsigned long addr)
+{
   char			*val;
   unsigned long long	allocated;
   unsigned long long	read;
