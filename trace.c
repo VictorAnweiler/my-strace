@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Thu Apr 13 17:20:15 2017 theo champion
-** Last update Sun Apr 16 18:53:46 2017 theo champion
+** Last update Sun Apr 16 17:58:17 2017 theo champion
 */
 
 #include "header.h"
@@ -76,14 +76,17 @@ static void			print_syscall_args(pid_t child,
     }
 }
 
-void	print_syscall(pid_t child, unsigned long long sysnum,
+void		print_syscall(pid_t child, unsigned long long sysnum,
                       unsigned long long retval, int mode)
 {
+  t_entry	*ent;
+  
   fprintf(stderr, "%s(", get_syscall_name(sysnum));
   print_syscall_args(child, sysnum, mode);
   fprintf(stderr, ") = ");
+  ent = &g_entries[sysnum];
   if (mode)
-    fprintf(stderr, "%lld\n", retval);
+    fprintf(stderr, ent->retval == INT ? "%lld\n" : "0x%llx\n", retval);
   else
     retval ? fprintf(stderr, "0x%llx\n", retval)
       : fprintf(stderr, "0x0\n");

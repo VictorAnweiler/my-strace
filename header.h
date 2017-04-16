@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:14:25 2017 theo champion
-** Last update Sun Apr 16 18:51:35 2017 theo champion
+** Last update Sun Apr 16 17:34:03 2017 theo champion
 */
 
 #ifndef _HEADER_H_
@@ -47,6 +47,7 @@ typedef struct		s_entry
   const char		*name;
   int			nb_args;
   enum e_arg_type	args_value[SYSCALL_MAXARGS];
+  enum e_arg_type	retval;
 }			t_entry;
 
 // TRACE.C
