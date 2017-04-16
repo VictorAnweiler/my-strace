@@ -5,7 +5,7 @@
 ** Login   <antoine.cauquil@epitech.eu>
 ** 
 ** Started on  Thu Apr 13 19:06:31 2017 
-** Last update Thu Apr 13 19:27:26 2017 theo champion
+** Last update Sun Apr 16 15:03:52 2017 theo champion
 */
 
 #include "header.h"
@@ -22,8 +22,8 @@ static int	ispath(const char *str)
   while (test[++i])
     if (test[i] != str[i])
       {
-	free(test);
-	return (0);
+        free(test);
+        return (0);
       }
   free(test);
   return (1);
@@ -41,22 +41,22 @@ static char	*getgoodpath(const char *bin, const char *env)
   while ((unsigned int)++i <= strlen(env))
     {
       j = 0;
-      while (env[i+j] && env[i+j] != 0x3A)
-	j++;
+      while (env[i + j] && env[i + j] != 0x3A)
+        j++;
       if (!(tmp = malloc(sizeof(char) * j + 2 + strlen(bin))))
-	return (NULL);
+        return (NULL);
       tmp = strncpy(tmp, env + i, j);
       *(tmp + j) = 0x2F;
       memcpy(tmp + j + 1, bin, strlen(bin) + 1);
       if (stat(tmp, &sb) == 0 && sb.st_mode & S_IXUSR)
-	return (tmp);
+        return (tmp);
       free(tmp);
       i += j;
     }
   return (NULL);
 }
 
-char	*getpath(char *bin, char * const *env)
+char		*getpath(char *bin, char * const *env)
 {
   int		i;
   struct stat	sb;
@@ -67,7 +67,7 @@ char	*getpath(char *bin, char * const *env)
   while (env[i])
     {
       if (ispath(env[i]))
-	return (getgoodpath(bin, env[i]));
+        return (getgoodpath(bin, env[i]));
       i++;
     }
   return (NULL);

@@ -5,14 +5,13 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:14:25 2017 theo champion
-** Last update Sat Apr 15 20:25:30 2017 theo champion
+** Last update Sun Apr 16 14:47:24 2017 theo champion
 */
 
 #ifndef _HEADER_H_
 #define _HEADER_H_
 
 #include <sys/ptrace.h>
-#include <bits/types.h>
 #include <sys/user.h>
 #include <sys/reg.h>
 #include <sys/stat.h>
@@ -32,6 +31,9 @@
 #define MAX_SYSCALL_NUM 331
 #define SYSCALL_MAXARGS 6
 #define PATHFLAG "PATH="
+
+#define EXIT_FAILURE 1
+#define EXIT_SUCCESS 0
 
 enum e_arg_type {
     ARG_INT,
