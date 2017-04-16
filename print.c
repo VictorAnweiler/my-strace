@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Sun Apr 16 18:14:01 2017 theo champion
-** Last update Sun Apr 16 18:53:53 2017 theo champion
+** Last update Sun Apr 16 19:12:39 2017 theo champion
 */
 
 #include "header.h"
@@ -17,7 +17,8 @@ static char		*read_string(pid_t child, unsigned long addr) {
   unsigned long long	tmp;
 
   allocated = 4096;
-  val = malloc(allocated);
+  if ((val = malloc(allocated)) == NULL)
+    return (NULL);
   read = 0;
   while (1)
     {
@@ -36,7 +37,6 @@ static char		*read_string(pid_t child, unsigned long addr) {
     }
   return (val);
 }
-
 
 void	print_arg(pid_t child, unsigned long long arg, int mode,
 		  enum e_arg_type type)
@@ -60,7 +60,6 @@ void	print_arg(pid_t child, unsigned long long arg, int mode,
     arg ? fprintf(stderr, "0x%llx", arg)
       : fprintf(stderr, (mode ? "NULL" : "0x0"));
 }
-
 
 int	print_exit(int exit_status, int mode)
 {
