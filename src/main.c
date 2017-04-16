@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Sun Apr 16 19:27:11 2017 theo champion
+** Last update Sun Apr 16 22:39:41 2017 theo champion
 */
 
 #include "header.h"
@@ -88,7 +88,7 @@ int		main(int argc, char **av)
   else
     {
       if (!av[1 + mode])
-	return (fprintf(stderr, "Usage : ./strace [-s] [-p <pid>|<command>]\n") || 1);
+        return (fprintf(stderr, "Invalid option for -s\n") || 1);
       pid = fork();
       if (pid == 0)
         return (launch_child(argc, av, mode));
