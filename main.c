@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Sun Apr 16 14:54:15 2017 theo champion
+** Last update Sun Apr 16 15:24:18 2017 theo champion
 */
 
 #include "header.h"
@@ -48,7 +48,6 @@ static int	launch_child(int argc, char **argv,
 int				trace(pid_t pid)
 {
   struct user_regs_struct	r;
-  struct user_regs_struct	r_ret;
   unsigned short		instr_code;
   int				wait_status;
 
@@ -63,10 +62,10 @@ int				trace(pid_t pid)
       waitpid(pid, &wait_status, 0);
       if (signal_status_handler(wait_status))
         {
-          if (ptrace(PTRACE_GETREGS, pid, NULL, &r_ret))
+          if (ptrace(PTRACE_GETREGS, pid, NULL, &r))
             perror("ptrace");
           if (instr_code == SYSCALL_CODE)
-            print_syscall(pid, r.rax, r_ret.rax);
+            print_syscall(pid, r.orig_rax, r.rax);
         }
     }
   return (wait_status);
