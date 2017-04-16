@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Sun Apr 16 15:24:18 2017 theo champion
+** Last update Sun Apr 16 16:04:36 2017 theo champion
 */
 
 #include "header.h"
@@ -27,8 +27,7 @@ static int	attach_to_running_process(pid_t pid)
   return (EXIT_SUCCESS);
 }
 
-static int	launch_child(int argc, char **argv,
-                             char * const *env, char *path)
+static int	launch_child(int argc, char **argv)
 {
   char		*args[argc + 1];
   int		i;
@@ -39,9 +38,8 @@ static int	launch_child(int argc, char **argv,
   args[argc] = NULL;
   ptrace(PTRACE_TRACEME);
   kill(getpid(), SIGSTOP);
-  if (execve(path, args, env) == -1)
+  if (execvp(argv[1], args) == -1)
     return (EXIT_FAILURE);
-  free(path);
   return (EXIT_SUCCESS);
 }
 
@@ -91,7 +89,7 @@ int		main(int argc, char **av, char * const *env)
         return (fprintf(stderr, "No such file or directory %s\n", av[1]) || 1);
       pid = fork();
       if (pid == 0)
-        return (launch_child(argc, av, env, path));
+        return (launch_child(argc, av));
     }
   exit_status = trace(pid);
   if (WIFEXITED(exit_status))

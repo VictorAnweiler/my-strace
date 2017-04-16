@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:14:25 2017 theo champion
-** Last update Sun Apr 16 14:47:24 2017 theo champion
+** Last update Sun Apr 16 16:02:00 2017 theo champion
 */
 
 #ifndef _HEADER_H_
@@ -49,7 +49,8 @@ typedef struct		s_entry
 }			t_entry;
 
 // TRACE.C
-void	print_syscall(pid_t child, uint32_t sysnum, uint32_t retval);
+void	print_syscall(pid_t child, unsigned long long sysnum,
+		      unsigned long long retval);
 // GETPATH.C
 char	*getpath(char *bin, char * const *env);
 
