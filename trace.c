@@ -5,7 +5,7 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Thu Apr 13 17:20:15 2017 theo champion
-** Last update Sun Apr 16 16:01:32 2017 theo champion
+** Last update Sun Apr 16 18:53:46 2017 theo champion
 */
 
 #include "header.h"
@@ -49,35 +49,42 @@ static unsigned long long	get_syscall_arg(pid_t child, int arg_nb)
   return (get_register_value(child, regs[arg_nb]));
 }
 
-static void			print_syscall_args(pid_t child, int num)
+static void			print_syscall_args(pid_t child,
+						   int num, int mode)
 {
-    t_entry			*ent;
-    int				nb_args;
-    int				i;
-    unsigned long long		arg;
+  t_entry			*ent;
+  int				nb_args;
+  int				i;
+  enum e_arg_type		type;
+  unsigned long long		arg;
 
-    ent = NULL;
-    nb_args = SYSCALL_MAXARGS;
-    if (num <= MAX_SYSCALL_NUM && g_entries[num].name)
-      {
-        ent = &g_entries[num];
-        nb_args = ent->nb_args;
-      }
-    i = 0;
-    while (i < nb_args)
-      {
-        arg = get_syscall_arg(child, i);
-        arg ? fprintf(stderr, "0x%llx", arg) : fprintf(stderr, "0x0");
-        if (i++ != nb_args - 1)
-          fprintf(stderr, ", ");
-      }
+  ent = NULL;
+  nb_args = SYSCALL_MAXARGS;
+  if (num <= MAX_SYSCALL_NUM && g_entries[num].name)
+    {
+      ent = &g_entries[num];
+      nb_args = ent->nb_args;
+    }
+  i = 0;
+  while (i < nb_args)
+    {
+      arg = get_syscall_arg(child, i);
+      type = ent ? ent->args_value[i] : PTR;
+      print_arg(child, arg, mode, type);
+      if (i++ != nb_args - 1)
+	fprintf(stderr, ", ");
+    }
 }
 
 void	print_syscall(pid_t child, unsigned long long sysnum,
-                      unsigned long long retval)
+                      unsigned long long retval, int mode)
 {
-    fprintf(stderr, "%s(", get_syscall_name(sysnum));
-    print_syscall_args(child, sysnum);
-    fprintf(stderr, ") = ");
-    retval ? fprintf(stderr, "0x%llx\n", retval) : fprintf(stderr, "0x0\n");
+  fprintf(stderr, "%s(", get_syscall_name(sysnum));
+  print_syscall_args(child, sysnum, mode);
+  fprintf(stderr, ") = ");
+  if (mode)
+    fprintf(stderr, "%lld\n", retval);
+  else
+    retval ? fprintf(stderr, "0x%llx\n", retval)
+      : fprintf(stderr, "0x0\n");
 }
