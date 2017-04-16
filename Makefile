@@ -5,10 +5,10 @@
 ## Login   <theo.champion@epitech.eu>
 ## 
 ## Started on  Wed Apr 12 11:17:49 2017 theo champion
-## Last update Sun Apr 16 20:21:13 2017 theo champion
+## Last update Sun Apr 16 22:34:44 2017 theo champion
 ##
 
-CC	= cc
+CC	= gcc
 
 RM	= rm -f
 
