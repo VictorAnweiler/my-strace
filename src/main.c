@@ -5,10 +5,10 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Wed Apr 12 11:13:34 2017 theo champion
-** Last update Sun Apr 16 22:39:41 2017 theo champion
+** Last update Sun Jul 16 02:19:59 2017 theo champion
 */
 
-#include "header.h"
+#include "strace.h"
 
 inline static int	signal_status_handler(int wait_status)
 {

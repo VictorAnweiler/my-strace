@@ -5,10 +5,10 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Sun Apr 16 18:14:01 2017 theo champion
-** Last update Sun Apr 16 19:31:11 2017 theo champion
+** Last update Sun Jul 16 02:20:09 2017 theo champion
 */
 
-#include "header.h"
+#include "strace.h"
 
 static char		*read_string(pid_t child, unsigned long addr)
 {

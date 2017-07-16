@@ -5,10 +5,10 @@
 ** Login   <theo.champion@epitech.eu>
 ** 
 ** Started on  Thu Apr 13 17:20:15 2017 theo champion
-** Last update Sun Apr 16 22:38:15 2017 theo champion
+** Last update Sun Jul 16 02:20:39 2017 theo champion
 */
 
-#include "header.h"
+#include "strace.h"
 #include "syscalls_entries.h"
 
 static unsigned long long	get_register_value(pid_t child, int pos)
